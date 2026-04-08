@@ -1,0 +1,20 @@
+spec_version: 1
+name: disasternet
+display_name: "DisasterNET — Multi-Agency Disaster Response"
+description: >
+  A real-world disaster response coordination environment for training
+  and evaluating AI agents on triage, resource allocation, and
+  multi-step decision-making within the critical 72-hour response window.
+type: environment
+runtime:
+  image: disasternet:latest
+  port: 7860
+app:
+  module: server.app
+  variable: app
+tags:
+  - disaster-response
+  - humanitarian-ai
+  - reinforcement-learning
+  - real-world
+  - openenv
