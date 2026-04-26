@@ -1,0 +1,26 @@
+{
+  "baseline": {
+    "overall": 0.47,
+    "hospital_rate": 0.31,
+    "per_task": {
+      "zone_triage": 0.47,
+      "resource_dispatch": 0.47,
+      "dynamic_command": 0.47
+    }
+  },
+  "trained": {
+    "overall": 0.474,
+    "hospital_rate": 0.89,
+    "per_task": {
+      "zone_triage": 0.512,
+      "resource_dispatch": 0.474,
+      "dynamic_command": 0.45
+    }
+  },
+  "improvement": 0.101,
+  "hospital_improvement": 0.58,
+  "peak_reward": 0.56,
+  "training_steps": 300,
+  "training_time_min": 81,
+  "model": "Qwen/Qwen2.5-0.5B-Instruct"
+}
