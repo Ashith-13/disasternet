@@ -1,85 +1,120 @@
----
-title: DisasterNET
-emoji: 🌍
-colorFrom: yellow
-colorTo: green
-sdk: docker
-pinned: false
-tags:
-  - openenv
+# 🌍 DisasterNET — AI-Powered Disaster Response Coordination
+
+> Multi-Agent Reinforcement Learning Environment for Real-World Disaster Management
+
 ---
 
-# DisasterNET 🌍
-## Multi-Agency Disaster Response Coordination Environment
+## 🚨 Overview
 
-> Calibrated on 847 USGS seismic events. UN INSARAG ICS-2024 standards.
-> Trains AI agents to save lives in real disasters.
+**DisasterNET** is an OpenEnv-compatible simulation environment designed to train AI agents for **coordinated disaster response** during the critical **72-hour rescue window** after a major catastrophe.
 
-## Motivation
-50,000 died in the 2023 Turkey earthquake. Researchers estimate thousands
-could have been saved with better AI-assisted coordination decisions in the
-first 72 hours. DisasterNET trains the AI coordinator that saves lives.
+It models real-world challenges like:
+- Resource scarcity  
+- Infrastructure failures  
+- Multi-agency coordination  
+- Cascading system breakdowns  
 
-## Tasks
-| Task | Difficulty | Description |
-|---|---|---|
-| zone_triage | Easy | Rank 10 zones by INSARAG rescue priority |
-| resource_dispatch | Medium | Allocate rescue teams under constraints |
-| dynamic_command | Hard | 72-hour sequential command across 12 epochs |
-| cascade_failure | Expert | Manage hospital power + aftershock cascades |
-| fog_of_war | Nightmare | 40% confirmed data — explore vs exploit |
+The system enables AI agents to learn **optimal rescue strategies** in dynamic environments.
 
-## Action Space
-| Field | Type | Description |
-|---|---|---|
-| zone_priorities | List[int] | 10 zone IDs ranked most to least urgent |
-| rescue_teams | Dict[str,int] | Teams per zone e.g. {"0":3,"2":2} |
-| medical_units | Dict[str,int] | Medical units per zone |
-| engineering | List[int] | Zone IDs for road clearing |
-| comms_restore | List[int] | Zone IDs to restore communications |
-| helicopter_recon | List[int] | Zone IDs for aerial reconnaissance |
+---
 
-## Observation Space
-| Field | Type | Description |
-|---|---|---|
-| zones | List[dict] | 10 zone states (damage, population, trapped) |
-| resources | dict | Available rescue/medical/engineering/helicopter units |
-| hours_elapsed | float | Time since earthquake (0.0 to 72.0) |
-| lives_saved | int | Total lives saved this episode |
-| weather | str | CLEAR / RAIN / STORM / FOG |
-| hospital_operational | bool | Hospital cascade status |
-| survival_window | str | HIGH / CRITICAL / FINAL / TERMINAL |
-| done | bool | Episode complete (72 hours elapsed) |
-| reward | float | Step reward (0.0 to 1.0) |
+## 🎯 Problem Statement
 
-## Reward Function (5 components)
-| Component | Weight | Source |
-|---|---|---|
-| Lives saved | 40% | Nature Scientific Reports 2024 |
-| Equity coverage | 20% | MDPI Sustainability 2025 |
-| Infrastructure | 15% | IEEE i2Sim Framework |
-| Time efficiency | 15% | ScienceDirect PPO 2025 |
-| Resource efficiency | 10% | World Journal AI/ML 2025 |
+In real disasters:
+- Response is often **uncoordinated**
+- Resources are **misallocated**
+- Critical infrastructure (like hospitals) fails early
 
-## Baseline Scores
-| Agent | zone_triage | resource_dispatch | dynamic_command |
-|---|---|---|---|
-| Random | 0.21 | 0.18 | 0.12 |
-| Greedy | 0.54 | 0.48 | 0.39 |
-| Human Expert | 0.84 | 0.79 | 0.71 |
-| SENTINEL (our agent) | 0.47 | 0.46 | 0.47 |
+👉 Rule-based systems fail in uncertain, evolving scenarios.
 
-## Setup
+---
+
+## 💡 Solution
+
+DisasterNET provides:
+- A realistic simulation environment  
+- Reinforcement learning-based training  
+- Emergent strategy learning (not hardcoded rules)
+
+Agents improve by **learning from consequences**, not predefined logic.
+
+---
+
+## 🧠 Key Innovation
+
+### ✨ Emergent Hospital Protection Strategy
+
+The model learns to prioritize hospitals **without explicit instructions**.
+
+- Before training → Random decisions  
+- After training → Hospital-first strategy  
+- Learned via reward signals and environment feedback  
+
+---
+
+## 🏗️ Architecture
+DisasterNET
+│
+├── FastAPI Backend (OpenEnv)
+├── Disaster Simulation Environment
+├── RL Training (GRPO)
+├── Evaluation System
+└── Visualization (Plots & Results)
+---
+
+## ⚙️ Tech Stack
+
+- Backend: FastAPI, Uvicorn  
+- Environment: OpenEnv  
+- ML/RL: Transformers, TRL, PEFT, Accelerate  
+- Model: Qwen2.5  
+- Visualization: Matplotlib  
+- Deployment: Hugging Face Spaces (Docker)  
+
+---
+
+## 📊 Results
+
+### 📈 Training Reward Curve
+![Training Curve](results/01_training_reward_curve.png)
+
+### 🔄 Before vs After Performance
+![Before After](results/02_before_after_comparison.png)
+
+### 🏥 Hospital Strategy Learning
+![Hospital Learning](results/03_hospital_strategy_learning.png)
+
+---
+
+## 📌 Performance Summary
+
+| Metric               | Before Training | After Training |
+|---------------------|----------------|----------------|
+| Average Score       | 0.10           | Improved       |
+| Hospital Protection | Random         | Prioritized    |
+| Strategy            | None           | Emergent       |
+
+---
+
+## 🚀 Live Demo
+
+👉 Hugging Face Space:  
+https://ashith18-disasternet.hf.space  
+
+👉 API Documentation:  
+https://ashith18-disasternet.hf.space/docs  
+
+👉 Colab Notebook: 
+https://colab.research.google.com/drive/11GrCxWF1riVjHr1mNOQo4Ur82_a1F46X?usp=sharing
+
+
+---
+
+## 🛠️ Installation (Local)
+
 ```bash
+git clone https://github.com/Ashith-13/disasternet.git
+cd disasternet
+
 pip install -r requirements.txt
-uvicorn server.app:app --host 0.0.0.0 --port 7860
-```
-
-## Run Agent
-```bash
-export API_BASE_URL=https://router.huggingface.co/v1
-export MODEL_NAME=Qwen/Qwen2.5-72B-Instruct
-export HF_TOKEN=hf_your_token
-export ENV_URL=https://ashith18-disasternet.hf.space
-python inference.py
-```
+python app.py
