@@ -1,3 +1,4 @@
+# ── Core OpenEnv Environment (unchanged from Round 1) ──────
 openenv-core>=0.2.2
 fastapi>=0.104.0
 uvicorn>=0.24.0
@@ -7,3 +8,15 @@ numpy>=1.24.0
 huggingface-hub>=0.22.0
 python-multipart>=0.0.6
 httpx>=0.24.0
+requests>=2.31.0
+
+# ── Round 2: GRPO Training Stack ───────────────────────────
+# Install unsloth separately on campus GPU machine:
+# pip install unsloth
+trl>=0.9.0
+datasets>=2.18.0
+transformers>=4.40.0
+accelerate>=0.28.0
+peft>=0.10.0
+torch>=2.1.0
+matplotlib>=3.7.0
